@@ -21,11 +21,21 @@ export interface userInfo {
 }
 
 export interface SetupPeer {
-  optional: object | undefined
+  optional: object | undefined;
   key: string | undefined;
 }
 
-export type TypeProps = 'RECEIVED_CALL' | 'ACCEPT_CALL' | 'START_CALL' | 'END_CALL' | 'REJECT_CALL' | 'MESSAGE' | 'START_GROUP_CALL' | 'RECEIVED_GROUP_CALL' | 'JOIN_GROUP_CALL' | 'LEAVE_GROUP_CALL';
+export type TypeProps =
+  | 'RECEIVED_CALL'
+  | 'ACCEPT_CALL'
+  | 'START_CALL'
+  | 'END_CALL'
+  | 'REJECT_CALL'
+  | 'MESSAGE'
+  | 'START_GROUP_CALL'
+  | 'RECEIVED_GROUP_CALL'
+  | 'JOIN_GROUP_CALL'
+  | 'LEAVE_GROUP_CALL';
 export type UserDataProps = object | null;
 
 export const CallEvents = {
@@ -39,10 +49,10 @@ export const CallEvents = {
   receivedGroup: 'RECEIVED_GROUP_CALL',
   joinGroup: 'JOIN_GROUP_CALL',
   leaveGroup: 'LEAVE_GROUP_CALL',
-}
+};
 
 export interface VideoConfigs {
-  width?: number,
-  height?: number,
-  frameRate?: number,
+  width?: number;
+  height?: number;
+  frameRate?: number;
 }

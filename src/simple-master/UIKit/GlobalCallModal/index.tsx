@@ -12,8 +12,11 @@ import { RTCView } from 'react-native-webrtc';
 import WebrtcSimple from '../../index';
 import { CallEvents } from '../../WebRtcSimple/contains';
 import { Timer } from '../index';
+import DisabledVideo from './DisabledVideo';
 import { styles } from './styles';
-// import DisabledVideo from 'components/Modal/DisabledVideo';
+import { useVideoCall } from './useVideoCall';
+import VideoCallFooter from './VideoCallFooter';
+import VideoCallHeader from './VideoCallHeader';
 
 let interval: any = null;
 const ringtime = 20;
@@ -31,11 +34,11 @@ export interface Props {
 
 StatusBar.setBarStyle('dark-content');
 const GlobalCallUI = React.forwardRef((props, ref) => {
-  const user_avatar = require('./icon/user.png');
   const [visible, setVisible] = useState<boolean>(false);
+  const [type, setType] = useState<string>();
   const stream = WebrtcSimple.getLocalStream();
   const [remoteStream, setRemoteStream] = useState<any>(null);
-  const [type, setType] = useState<string>('');
+
   const [audioEnable, setAudioEnable] = useState<boolean>(true);
   const [videoEnabled, setVideoEnable] = useState<boolean>(true);
   const [cameraType, setCameraType] = useState<'front' | 'end'>('front');
@@ -44,7 +47,7 @@ const GlobalCallUI = React.forwardRef((props, ref) => {
   );
   const [name, setName] = useState<string>('');
   const [avatar, setAvatar] = useState<string>('');
-  const [hideVideo, setHideVideo] = useState(false);
+  const { hideVideo, setHideVideo } = useVideoCall();
   useImperativeHandle(ref, () => {
     return { call };
   });
@@ -55,11 +58,16 @@ const GlobalCallUI = React.forwardRef((props, ref) => {
     });
 
     WebrtcSimple.listenings.callEvents((type, userData: any) => {
-      console.log();
-      if (userData && userData?.message && userData?.message?.value === 'ON') {
-        setHideVideo && setHideVideo(false);
+      console.log('lllllll', userData);
+      if (
+        userData &&
+        userData?.message &&
+        userData?.type === 'CAMERA' &&
+        userData?.message?.value === 'OFF'
+      ) {
+        setHideVideo(true);
       } else {
-        setHideVideo && setHideVideo(true);
+        setHideVideo(false);
       }
       if (type !== CallEvents.message) {
         setType(type);
@@ -90,6 +98,7 @@ const GlobalCallUI = React.forwardRef((props, ref) => {
             setAvatar(userData.receiver_avatar);
           }
         }
+
         setVisible(true);
       }
 
@@ -149,36 +158,9 @@ const GlobalCallUI = React.forwardRef((props, ref) => {
   const audio = (enable: boolean) => {
     WebrtcSimple.events.audioEnable(enable);
   };
-
-  const renderIcon = (icon: any, color: string, onPress: () => void) => {
-    return (
-      <View>
-        <TouchableOpacity
-          style={[styles.btnCall, { backgroundColor: color }]}
-          onPress={() => {
-            onPress();
-          }}>
-          <Image
-            style={[
-              styles.icon,
-              { tintColor: color === 'white' ? 'black' : 'white' },
-            ]}
-            source={icon}
-          />
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
-  const renderDisableVideo = () => {
-    return (
-      <View>
-        <Image
-          source={{ uri: user_avatar }}
-          style={{ height: 50, width: 50, borderRadius: 100 }}
-        />
-      </View>
-    );
+  const rejectCall = () => {
+    setVisible(false);
+    endCall();
   };
 
   if (!visible) {
@@ -199,93 +181,69 @@ const GlobalCallUI = React.forwardRef((props, ref) => {
         {avatar.length > 0 && type !== CallEvents.accept && (
           <Image style={styles.avatar} source={{ uri: avatar }} />
         )}
-        {(type === CallEvents.start || type === CallEvents.received) && (
+        {type === CallEvents.start && CallEvents.accept && (
           <Timer style={styles.timer} textStyle={styles.textTimer} start />
         )}
-        {type === CallEvents.accept && remoteStream && (
+        {(type === CallEvents.received ||
+          type === CallEvents.accept ||
+          type === CallEvents.start ||
+          remoteStream) && (
           <View style={style.container}>
-            {!hideVideo ? (
+            {(hideVideo || type === CallEvents.received) && <DisabledVideo />}
+            {!hideVideo && remoteStream && remoteCameraType && (
               <RTCView
                 mirror={remoteCameraType === 'front' ? true : false}
-                streamURL={remoteStream.toURL()}
+                streamURL={remoteStream?.toURL()}
                 zOrder={99}
                 style={styles.stream}
                 objectFit="cover"
               />
-            ) : (
-              renderDisableVideo()
-            )}
-            {stream && (
-              <View style={styles.boxMyStream}>
-                <RTCView
-                  mirror={cameraType === 'front' ? true : false}
-                  streamURL={stream.toURL()}
-                  zOrder={999}
-                  style={styles.myStream}
-                  objectFit="cover"
-                />
-                {type === CallEvents.accept && (
-                  <Timer
-                    style={styles.timer2}
-                    textStyle={styles.textTimer2}
-                    start
-                  />
-                )}
-                <TouchableOpacity onPress={() => switchCamera()}>
-                  <Image
-                    style={styles.iconCamera}
-                    source={require('./icon/camera.png')}
-                  />
-                </TouchableOpacity>
-              </View>
             )}
           </View>
         )}
-        {type === CallEvents.start && (
-          <View style={styles.manageCall}>
-            {renderIcon(require('./icon/endcall.png'), 'red', () => {
-              setVisible(false);
-              endCall();
-            })}
-          </View>
-        )}
-        {type === CallEvents.received && (
-          <View style={styles.manageCall}>
-            {renderIcon(require('./icon/call.png'), 'green', () => {
-              acceptCall();
-            })}
-            {renderIcon(require('./icon/endcall.png'), 'red', () => {
-              setVisible(false);
-              endCall();
-            })}
-          </View>
-        )}
-        {type === CallEvents.accept && (
-          <View style={styles.manageCall}>
-            {renderIcon(
-              require('./icon/micro.png'),
-              audioEnable ? 'white' : 'red',
-              () => {
-                audio(!audioEnable);
-                setAudioEnable(!audioEnable);
-              },
-            )}
 
-            {renderIcon(
-              require('./icon/video.png'),
-              videoEnabled ? 'white' : 'red',
-              () => {
-                video(!videoEnabled);
-                setVideoEnable(!videoEnabled);
-              },
+        {stream && (
+          <View style={styles.boxMyStream}>
+            <RTCView
+              mirror={cameraType === 'front' ? true : false}
+              streamURL={stream.toURL()}
+              zOrder={999}
+              style={styles.myStream}
+              objectFit="cover"
+            />
+            {type === CallEvents.accept && (
+              <Timer
+                style={styles.timer2}
+                textStyle={styles.textTimer2}
+                start
+              />
             )}
-
-            {renderIcon(require('./icon/endcall.png'), 'red', () => {
-              setVisible(false);
-              endCall();
-            })}
+            <TouchableOpacity onPress={() => switchCamera()}>
+              <Image
+                style={styles.iconCamera}
+                source={require('./icon/camera.png')}
+              />
+            </TouchableOpacity>
           </View>
         )}
+
+        <VideoCallFooter
+          onAccept={acceptCall}
+          onEndCall={rejectCall}
+          callStatus={type}
+          videoDisabled={videoEnabled}
+          audioDisabled={audioEnable}
+          toggleAudio={() => {
+            audio(!audioEnable);
+            setAudioEnable(!audioEnable);
+          }}
+          toggleVideo={() => {
+            video(!videoEnabled);
+            setVideoEnable(!videoEnabled);
+          }}
+        />
+
+        {type === CallEvents.accept && <VideoCallHeader />}
       </View>
     </Modal>
   );

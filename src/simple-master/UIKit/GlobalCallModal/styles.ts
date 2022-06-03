@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   container: {
@@ -18,17 +18,17 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   btnCall: {
-    width: 70,
-    height: 70,
+    width: 50,
+    height: 50,
     borderRadius: 35,
-    marginHorizontal: 20,
+    // marginHorizontal: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 3
+    padding: 3,
   },
   icon: {
-    width: 35,
-    height: 35,
+    width: 25,
+    height: 25,
   },
   manageCall: {
     flexDirection: 'row',
@@ -80,10 +80,10 @@ export const styles = StyleSheet.create({
     minHeight: 70,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 50
+    marginTop: 50,
   },
   textTimer: {
-    fontSize: 20
+    fontSize: 20,
   },
   timer2: {
     backgroundColor: 'transparent',
@@ -97,9 +97,9 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 9,
     right: 10,
-    top: 10
+    top: 10,
   },
   textTimer2: {
-    fontSize: 12
+    fontSize: 12,
   },
 });
