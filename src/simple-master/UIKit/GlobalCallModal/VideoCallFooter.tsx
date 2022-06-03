@@ -24,6 +24,8 @@ const VideoCallFooter: React.FC<IVideoCallFooter> = ({
   callStatus,
   toggleVideo,
   toggleAudio,
+  videoDisabled,
+  audioDisabled,
 }) => {
   return (
     <View style={footerStyle.container}>
@@ -83,12 +85,12 @@ const VideoCallFooter: React.FC<IVideoCallFooter> = ({
             ]}>
             <FooterIcon
               icon={require('./icon/mic_black.png')}
-              color="white"
+              color={audioDisabled ? undefined : 'white'}
               onPress={toggleAudio}
             />
             <FooterIcon
               icon={require('./icon/no-video_white.png')}
-              // color="green"
+              color={videoDisabled ? undefined : 'white'}
               onPress={toggleVideo}
             />
             <FooterIcon
