@@ -50,6 +50,13 @@ const VideoCallFooter: React.FC<IVideoCallFooter> = ({
           />
         </View>
       )}
+      {callStatus === CallEvents.start && (
+        <FooterIcon
+          icon={require('./icon/call_white.png')}
+          color="red"
+          onPress={onEndCall}
+        />
+      )}
 
       {callStatus === CallEvents.accept && (
         <View
