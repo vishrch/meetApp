@@ -40,7 +40,7 @@ public class ReactNativeFlipper {
           new NetworkingModule.CustomClientBuilder() {
             @Override
             public void apply(OkHttpClient.Builder builder) {
-              builder.addNetworkInterceptor(new FlipperOkhttpInterceptor(networkFlipperPlugin));
+              // builder.addNetworkInterceptor(new FlipperOkhttpInterceptor(networkFlipperPlugin));
             }
           });
       client.addPlugin(networkFlipperPlugin);
@@ -50,20 +50,20 @@ public class ReactNativeFlipper {
       // Hence we run if after all native modules have been initialized
       ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
       if (reactContext == null) {
-        reactInstanceManager.addReactInstanceEventListener(
-            new ReactInstanceManager.ReactInstanceEventListener() {
-              @Override
-              public void onReactContextInitialized(ReactContext reactContext) {
-                reactInstanceManager.removeReactInstanceEventListener(this);
-                reactContext.runOnNativeModulesQueueThread(
-                    new Runnable() {
-                      @Override
-                      public void run() {
-                        client.addPlugin(new FrescoFlipperPlugin());
-                      }
-                    });
-              }
-            });
+        // reactInstanceManager.addReactInstanceEventListener(
+        //     new ReactInstanceManager.ReactInstanceEventListener() {
+        //       @Override
+        //       public void onReactContextInitialized(ReactContext reactContext) {
+        //         reactInstanceManager.removeReactInstanceEventListener(this);
+        //         reactContext.runOnNativeModulesQueueThread(
+        //             new Runnable() {
+        //               @Override
+        //               public void run() {
+        //                 client.addPlugin(new FrescoFlipperPlugin());
+        //               }
+        //             });
+        //       }
+        //     });
       } else {
         client.addPlugin(new FrescoFlipperPlugin());
       }
