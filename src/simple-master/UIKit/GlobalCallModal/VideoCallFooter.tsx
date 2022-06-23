@@ -1,12 +1,7 @@
 import React from 'react';
-import {
-  View,
-  Image,
-  TouchableOpacity,
-  ImageSourcePropType,
-  StyleSheet,
-} from 'react-native';
-import { CallEvents, TypeProps } from '../../WebRtcSimple/contains';
+import { View, StyleSheet } from 'react-native';
+import { CallEvents } from '../../WebRtcSimple/contains';
+import { CallIcons } from './CallIcons';
 
 import { styles } from './styles';
 interface IVideoCallFooter {
@@ -40,12 +35,12 @@ const VideoCallFooter: React.FC<IVideoCallFooter> = ({
               marginBottom: 40,
             },
           ]}>
-          <FooterIcon
+          <CallIcons
             icon={require('./icon/call_white.png')}
             color="red"
             onPress={onEndCall}
           />
-          <FooterIcon
+          <CallIcons
             icon={require('./icon/call.png')}
             color="green"
             onPress={onAccept}
@@ -53,7 +48,7 @@ const VideoCallFooter: React.FC<IVideoCallFooter> = ({
         </View>
       )}
       {callStatus === CallEvents.start && (
-        <FooterIcon
+        <CallIcons
           icon={require('./icon/call_white.png')}
           color="red"
           onPress={onEndCall}
@@ -70,7 +65,7 @@ const VideoCallFooter: React.FC<IVideoCallFooter> = ({
               paddingHorizontal: 15,
             },
           ]}>
-          <FooterIcon
+          <CallIcons
             icon={require('./icon/heart_white.png')}
             onPress={() => {}}
           />
@@ -83,23 +78,23 @@ const VideoCallFooter: React.FC<IVideoCallFooter> = ({
                 justifyContent: 'space-around',
               },
             ]}>
-            <FooterIcon
+            <CallIcons
               icon={require('./icon/mic_black.png')}
               color={audioDisabled ? undefined : 'white'}
               onPress={toggleAudio}
             />
-            <FooterIcon
+            <CallIcons
               icon={require('./icon/no-video_white.png')}
               color={videoDisabled ? undefined : 'white'}
               onPress={toggleVideo}
             />
-            <FooterIcon
+            <CallIcons
               icon={require('./icon/call_white.png')}
               color="red"
               onPress={onEndCall}
             />
           </View>
-          <FooterIcon
+          <CallIcons
             icon={require('./icon/option_white.png')}
             onPress={() => {}}
           />
@@ -122,49 +117,3 @@ const footerStyle = StyleSheet.create({
 });
 
 export default VideoCallFooter;
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-//
-
-interface IFooterIcon {
-  icon: ImageSourcePropType;
-  color?: string;
-  onPress: () => void;
-}
-
-export const FooterIcon: React.FC<IFooterIcon> = ({ icon, color, onPress }) => {
-  return (
-    <View>
-      <TouchableOpacity
-        style={[styles.btnCall, !!color && { backgroundColor: color }]}
-        onPress={() => {
-          onPress();
-        }}>
-        <Image
-          style={[
-            styles.icon,
-            { tintColor: color === 'white' ? 'black' : 'white' },
-          ]}
-          source={icon}
-        />
-      </TouchableOpacity>
-    </View>
-  );
-};
