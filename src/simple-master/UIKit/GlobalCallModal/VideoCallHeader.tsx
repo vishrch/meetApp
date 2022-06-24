@@ -8,9 +8,9 @@ import {
   StyleSheet,
 } from 'react-native';
 import { CallEvents, TypeProps } from '../../WebRtcSimple/contains';
+import { CallIcons } from './CallIcons';
 
 import { styles } from './styles';
-import { FooterIcon } from './VideoCallFooter';
 interface IVideoCallHeader {
   callStatus?: string;
   name?: string;
@@ -24,7 +24,7 @@ const VideoCallHeader: React.FC<IVideoCallHeader> = ({
   return (
     <View style={headerStyle.container}>
       <View style={{ flexDirection: 'row' }}>
-        <FooterIcon
+        <CallIcons
           icon={require('./icon/messenger_white.png')}
           onPress={() => {}}
         />
@@ -33,10 +33,7 @@ const VideoCallHeader: React.FC<IVideoCallHeader> = ({
           <Text style={headerStyle.connectionStatus}>CONNECTING</Text>
         </View>
       </View>
-      <FooterIcon
-        icon={require('./icon/volume_white.png')}
-        onPress={() => {}}
-      />
+      <CallIcons icon={require('./icon/volume_white.png')} onPress={() => {}} />
     </View>
   );
 };

@@ -36,9 +36,7 @@ StatusBar.setBarStyle('dark-content');
 const GlobalCallUI = React.forwardRef((props, ref) => {
   const [visible, setVisible] = useState<boolean>(false);
   const [type, setType] = useState<string>();
-  const stream = WebrtcSimple.getLocalStream();
   const [remoteStream, setRemoteStream] = useState<any>(null);
-
   const [audioEnable, setAudioEnable] = useState<boolean>(true);
   const [videoEnabled, setVideoEnable] = useState<boolean>(true);
   const [cameraType, setCameraType] = useState<'front' | 'end'>('front');
@@ -47,7 +45,7 @@ const GlobalCallUI = React.forwardRef((props, ref) => {
   );
   const [name, setName] = useState<string>('');
   const [avatar, setAvatar] = useState<string>('');
-  const { hideVideo, setHideVideo } = useVideoCall();
+  const { hideVideo, setHideVideo, stream } = useVideoCall();
   useImperativeHandle(ref, () => {
     return { call };
   });
@@ -58,7 +56,8 @@ const GlobalCallUI = React.forwardRef((props, ref) => {
     });
 
     WebrtcSimple.listenings.callEvents((type, userData: any) => {
-      console.log('lllllll', userData);
+      console.log('type', type);
+      console.log('userData', userData);
       if (
         userData &&
         userData?.message &&
@@ -189,16 +188,22 @@ const GlobalCallUI = React.forwardRef((props, ref) => {
           type === CallEvents.start ||
           remoteStream) && (
           <View style={style.container}>
-            {(hideVideo || type === CallEvents.received) && <DisabledVideo />}
-            {!hideVideo && remoteStream && remoteCameraType && (
-              <RTCView
-                mirror={remoteCameraType === 'front' ? true : false}
-                streamURL={remoteStream?.toURL()}
-                zOrder={99}
-                style={styles.stream}
-                objectFit="cover"
-              />
-            )}
+            {(hideVideo ||
+              type === CallEvents.received ||
+              type === CallEvents.start) && <DisabledVideo />}
+            {!hideVideo &&
+              remoteStream &&
+              remoteCameraType &&
+              type !== CallEvents.received &&
+              type !== CallEvents.start && (
+                <RTCView
+                  mirror={remoteCameraType === 'front' ? true : false}
+                  streamURL={remoteStream?.toURL()}
+                  zOrder={99}
+                  style={styles.stream}
+                  objectFit="cover"
+                />
+              )}
           </View>
         )}
 

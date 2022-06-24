@@ -1,4 +1,3 @@
-import { useVideoCall } from 'hooks/useVideoCall';
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 import {
   Image,
