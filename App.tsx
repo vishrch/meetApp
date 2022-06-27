@@ -16,15 +16,19 @@ import {
 } from './src/simple-master/UIKit';
 import { useEffect } from 'react';
 import { DeviceEventEmitter, Platform } from 'react-native';
-import IncomingCall from 'react-native-incoming-call';
 import messaging from '@react-native-firebase/messaging';
 
 LogBox.ignoreAllLogs(true);
 StatusBar.setBarStyle('dark-content');
 const MyBase = () => {
   useEffect(() => {
-    incomingCall();
-    requestUserPermission();
+    // DeviceEventEmitter.addListener('endCall', payload => {
+    //   console.log('********', payload);
+    // });
+    // DeviceEventEmitter.addListener('answerCall', payload => {
+    //   console.log('********', payload);
+    // });
+    getFCMToken();
   }, []);
 
   const requestUserPermission = async () => {
@@ -34,17 +38,20 @@ const MyBase = () => {
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
     if (enabled) {
+      getFCMToken();
     }
   };
+  const getFCMToken = async () => {
+    try {
+      const authorized = await messaging().hasPermission();
+      const fcmToken = await messaging().getToken();
+      console.log(';;;;;;', fcmToken);
+      if (authorized) return fcmToken;
 
-  const incomingCall = async () => {
-    if (Platform.OS === 'android') {
-      const payload = await IncomingCall.getExtrasFromHeadlessMode();
-      console.log('launchParameters', payload);
-      if (payload) {
-      }
-      DeviceEventEmitter.addListener('endCall', payload => {});
-      DeviceEventEmitter.addListener('answerCall', payload => {});
+      requestUserPermission();
+      return fcmToken;
+    } catch (error) {
+      console.log(error);
     }
   };
 

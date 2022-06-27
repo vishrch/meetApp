@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
   package="com.meetappr">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,7 +11,7 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
-
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
       android:name=".MainApplication"
@@ -20,14 +21,27 @@
       android:allowBackup="false"
       android:usesCleartextTraffic="true"
       android:theme="@style/AppTheme">
-      <service
-    android:name=".MyFirebaseMessagingService"
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_ac_unit" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/white" />
+        <meta-data
+         tools:replace="android:value"
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+            
+   <service
+    android:name=".MeetAppFirebaseMessagingService"
     android:exported="false">
     <intent-filter>
         <action android:name="com.google.firebase.MESSAGING_EVENT" />
     </intent-filter>
 </service>
       <activity android:name="com.incomingcall.UnlockScreenActivity" />
+        <activity  
+         android:name=".IncomingCallScreenActivity"   />
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
