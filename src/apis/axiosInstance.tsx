@@ -5,11 +5,13 @@ import { isEmpty } from 'lodash';
 const instance = axios.create({
   baseURL: 'https://shareslate.com/apis/',
   headers: {
-    'Content-Type': 'multipart/form-data;'
-  }
+    'Content-Type': 'multipart/form-data;',
+  },
 });
 
-instance.interceptors.request.use(async function (config: AxiosRequestConfig) {
+https: instance.interceptors.request.use(async function (
+  config: AxiosRequestConfig,
+) {
   try {
     console.log('here');
     const token = await EncryptedStorage.getItem('user_token');

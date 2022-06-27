@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Button, Input, Layout, Spinner, Text } from '@ui-kitten/components';
 import { Formik, FormikHelpers } from 'formik';
 import { StyleSheet, View } from 'react-native';
@@ -7,20 +7,21 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import { get, isEmpty } from 'lodash';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import loginApi from '../../apis/auth/login';
-//import loginApi from '@app/apis/auth/login';
+import { usePushNotification } from './usePushNotification';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email')
     .required('Email field is required'),
-  password: Yup.string().min(6).required('Password field is required')
+  password: Yup.string().min(6).required('Password field is required'),
 });
 
 function Sample() {
   const navigate = useNavigation();
   const [error, setError] = useState<string | null>(null);
+  const { requestNotificationPermission } = usePushNotification();
 
-  const setUserToken = async (token: string, user: object,name:string) => {
+  const setUserToken = async (token: string, user: object, name: string) => {
     if (isEmpty(token)) {
       return;
     }
@@ -54,26 +55,28 @@ function Sample() {
 
   const userLogin = async (data: FormData) => {
     const response = await loginApi(data);
+
     await setUserToken(
       get(response, 'data.data.token', ''),
       get(response, 'data.data', {}),
-      get(response, 'data.data.username', {})
+      get(response, 'data.data.username', {}),
     );
     return response?.data;
-  }
+  };
 
   const login = async (email: string, password: string) => {
     let formData = new FormData();
     formData.append('email', email);
     formData.append('password', password);
-    userLogin(formData).then(data => {
-      navigate.dispatch(StackActions.replace('Home'));
-      console.log(data)
-    }).catch(
-      err => {
-        console.log(err)
-      }
-    )
+    userLogin(formData)
+      .then(data => {
+        navigate.dispatch(StackActions.replace('Home'));
+        console.log('uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu', data);
+        requestNotificationPermission();
+      })
+      .catch(err => {
+        console.log(err);
+      });
     // await dispatch(userLogin(formData))
     //   .unwrap()
     //   .then(data => {
@@ -90,7 +93,7 @@ function Sample() {
 
   const onSubmit = async (
     values: LoginFormData,
-    { setSubmitting }: FormikHelpers<LoginFormData>
+    { setSubmitting }: FormikHelpers<LoginFormData>,
   ) => {
     setSubmitting(true);
     await login(values.email.trim(), values.password.trim());
@@ -112,7 +115,7 @@ function Sample() {
           handleSubmit,
           values,
           errors,
-          isSubmitting
+          isSubmitting,
         }) => (
           <>
             <Input
@@ -184,28 +187,28 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20
+    padding: 20,
   },
   appTitle: {
-    marginBottom: 40
+    marginBottom: 40,
   },
   textInput: {
     marginTop: 15,
     // borderColor: 'grey',
-    borderRadius: 50
+    borderRadius: 50,
   },
   actionButton: {
     width: 200,
     marginTop: 15,
-    borderRadius: 50
+    borderRadius: 50,
   },
   registerButton: {
-    marginVertical: 20
+    marginVertical: 20,
   },
   errorText: {
     textTransform: 'capitalize',
-    marginTop: 5
-  }
+    marginTop: 5,
+  },
 });
 
 export default Sample;

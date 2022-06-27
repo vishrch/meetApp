@@ -141,14 +141,14 @@ public class MeetAppFirebaseMessagingService extends FirebaseMessagingService {
         String notifDataType = remoteMessage.getData().get("type");
         String startCallType="incomingcall";
         String disconnectCallType="calldisconnected";
-         Log.e("remoteMessage--->",remoteMessage.getData().get("callerName"));
+         Log.e("remoteMessage--->",remoteMessage.getData().toString());
         if( startCallType.equals(notifDataType)) {
-                Intent i = new Intent(getApplicationContext(), IncomingCallScreenActivity.class);
+                if(!isAppRunning()||!appInForeground(getApplicationContext())){Intent i = new Intent(getApplicationContext(), IncomingCallScreenActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 i.putExtra("CALLER_NAME", remoteMessage.getData().get("callerName"));
                 i.putExtra("CALL_TYPE",remoteMessage.getData().get("type"));
                 i.putExtra("APP_STATE",isAppRunning);
-                startActivity(i);
+                startActivity(i);}
         }else if(disconnectCallType.equals((notifDataType))){
             LocalBroadcastManager localBroadcastManager = LocalBroadcastManager
                     .getInstance(MeetAppFirebaseMessagingService.this);
@@ -157,6 +157,22 @@ public class MeetAppFirebaseMessagingService extends FirebaseMessagingService {
         }
         }
 
+private boolean appInForeground(Context context) {
+  
+    ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+    List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = activityManager.getRunningAppProcesses();
+    if (runningAppProcesses == null) {
+        return false;
+    }
+
+    for (ActivityManager.RunningAppProcessInfo runningAppProcess : runningAppProcesses) {
+        if (runningAppProcess.processName.equals(context.getPackageName()) &&
+                runningAppProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+            return true;
+        }
+    }
+    return false;
+}
 
 
 
@@ -173,7 +189,7 @@ public class MeetAppFirebaseMessagingService extends FirebaseMessagingService {
 		}
 		if(n==1){ // App is killed
     Log.e("killed",itr.toString());
-			return true;
+			return false;
 		}
 		return true; // App is in background or foreground
 	}

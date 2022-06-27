@@ -100,48 +100,48 @@ public class IncomingCallScreenActivity extends ReactActivity {
 
         final ReactContext reactContext = getReactInstanceManager().getCurrentReactContext();
 
-        ImageButton acceptCallBtn = (ImageButton) findViewById(R.id.accept_call_btn);
+        // ImageButton acceptCallBtn = (ImageButton) findViewById(R.id.accept_call_btn);
         // acceptCallBtn.setOnClickListener(new OnClickListener() {
         //     @Override
         //     public void onClick(View view) {
         //         WritableMap params = Arguments.createMap();
         //         params.putBoolean("done", true);
-        //         // params.putString("call_type",incoming_call_type);
+        //         params.putString("call_type",incoming_call_type);
 
         //         if(isAppRuning){
-        //             // Intent intent = new Intent(IncomingCallScreenActivity.this, MainActivity.class);
-        //             // intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        //             // intent.putExtra("CALL_TYPE",incoming_call_type);
-        //             // finish();
-        //             // startActivity(intent);
+        //             Intent intent = new Intent(IncomingCallScreenActivity.this, MainActivity.class);
+        //             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        //             intent.putExtra("CALL_TYPE",incoming_call_type);
+        //             finish();
+        //             startActivity(intent);
         //         }
         //     else{
-        //             // sendEvent(reactContext, "accept", params);
-        //             // finish();
+        //             sendEvent(reactContext, "accept", params);
+        //             finish();
         //         }
         //     }
         // });
 
         ImageButton rejectCallBtn = (ImageButton) findViewById(R.id.reject_call_btn);
         // rejectCallBtn.setOnClickListener(new OnClickListener() {
-        //     @Override
-        //     public void onClick(View view) {
-        //         WritableMap params = Arguments.createMap();
-        //         params.putBoolean("done", true);
-        //         // params.putString("call_type",incoming_call_type);
-        //         // onDisconnected();
-        //         if(isAppRuning){
-        //             // Intent intent = new Intent(IncomingCallScreenActivity.this, MainActivity.class);
-        //             // intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY );
-        //             // intent.putExtra("CALL_TYPE",incoming_call_type);
-        //             // finish();
-        //             // startActivity(intent);
-        //         }
-        //         else{
-        //             // sendEvent(reactContext, "reject", params);
-        //             // finish();
-        //         }
-        //     }
+            // @Override
+            // public void onClick(View view) {
+            //     WritableMap params = Arguments.createMap();
+            //     params.putBoolean("done", true);
+            //     params.putString("call_type",incoming_call_type);
+            //     onDisconnected();
+            //     if(isAppRuning){
+            //         Intent intent = new Intent(IncomingCallScreenActivity.this, MainActivity.class);
+            //         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY );
+            //         intent.putExtra("CALL_TYPE",incoming_call_type);
+            //         finish();
+            //         startActivity(intent);
+            //     }
+            //     else{
+            //         sendEvent(reactContext, "reject", params);
+            //         finish();
+            //     }
+            // }
         // });
 
         Handler handler = new Handler();
@@ -150,7 +150,7 @@ public class IncomingCallScreenActivity extends ReactActivity {
             public void run() {
                 finish();
             }
-        }, 45000);
+        }, 10000);
 
     }
 

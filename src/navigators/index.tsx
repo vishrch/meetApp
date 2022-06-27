@@ -6,7 +6,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import MainScreen from 'screens/bottombar';
 import Dashboard from 'screens/dashboard/Dashboard';
-import LoginScreen from 'screens/login';
 import Sample from 'screens/login/login';
 
 export const navigationRef: React.RefObject<NavigationContainerRef<any>> =
