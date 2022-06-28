@@ -71,24 +71,12 @@ function Sample() {
     userLogin(formData)
       .then(data => {
         navigate.dispatch(StackActions.replace('Home'));
-        console.log('uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu', data);
-        requestNotificationPermission();
+        console.log('__userData___', data.data);
+        requestNotificationPermission(data.data.id);
       })
       .catch(err => {
         console.log(err);
       });
-    // await dispatch(userLogin(formData))
-    //   .unwrap()
-    //   .then(data => {
-    //     if (get(data, 'status', '') !== 'success') {
-    //       setError(get(data, 'data.message', 'Invalid credentials!'));
-    //       setTimeout(() => {
-    //         setError(null);
-    //       }, 3000);
-    //       return;
-    //     }
-    //     navigate.dispatch(StackActions.replace('Home'));
-    //   });
   };
 
   const onSubmit = async (

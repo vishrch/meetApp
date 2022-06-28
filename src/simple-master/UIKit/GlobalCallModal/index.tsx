@@ -9,6 +9,10 @@ import {
   View,
 } from 'react-native';
 import { RTCView } from 'react-native-webrtc';
+import {
+  PUSH_CALL_TYPE,
+  usePushNotification,
+} from 'screens/login/usePushNotification';
 import WebrtcSimple from '../../index';
 import { CallEvents } from '../../WebRtcSimple/contains';
 import { Timer } from '../index';
@@ -46,6 +50,7 @@ const GlobalCallUI = React.forwardRef((props, ref) => {
   const [name, setName] = useState<string>('');
   const [avatar, setAvatar] = useState<string>('');
   const { hideVideo, setHideVideo, stream } = useVideoCall();
+  const { sendFCMPush } = usePushNotification();
   useImperativeHandle(ref, () => {
     return { call };
   });
@@ -122,6 +127,10 @@ const GlobalCallUI = React.forwardRef((props, ref) => {
     });
   }, []);
 
+  useEffect(() => {
+    console.log('userData', globalCallRef.current);
+  }, [globalCallRef]);
+
   const call = (sessionId: string, userData: object) => {
     WebrtcSimple.events.call(sessionId, userData);
   };
@@ -158,6 +167,7 @@ const GlobalCallUI = React.forwardRef((props, ref) => {
     WebrtcSimple.events.audioEnable(enable);
   };
   const rejectCall = () => {
+    sendFCMPush(PUSH_CALL_TYPE.INCOMING, 'vvv', globalCallRef.current.user_id);
     setVisible(false);
     endCall();
   };

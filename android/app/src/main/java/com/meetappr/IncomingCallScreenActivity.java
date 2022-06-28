@@ -100,7 +100,7 @@ public class IncomingCallScreenActivity extends ReactActivity {
 
         final ReactContext reactContext = getReactInstanceManager().getCurrentReactContext();
 
-        // ImageButton acceptCallBtn = (ImageButton) findViewById(R.id.accept_call_btn);
+         ImageButton acceptCallBtn = (ImageButton) findViewById(R.id.accept_call_btn);
         // acceptCallBtn.setOnClickListener(new OnClickListener() {
         //     @Override
         //     public void onClick(View view) {

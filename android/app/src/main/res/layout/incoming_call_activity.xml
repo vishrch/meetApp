@@ -31,6 +31,7 @@ android:background="@drawable/call_bg">
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:textSize="40sp"
+        android:text="@string/incoming_call"
         android:layout_below="@+id/callStatus"
         android:fontFamily="sans-serif-light"
         android:gravity="center"
@@ -50,13 +51,14 @@ android:background="@drawable/call_bg">
         android:layout_marginLeft="155dp"
         android:layout_marginRight="155dp"
         >
+
         <Button
             android:id="@+id/icon_text"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:background="@drawable/bg_circle"
-            android:textSize="40sp"
-            android:textColor="#fff" />
+            android:textColor="#fff"
+            android:textSize="40sp" />
     </LinearLayout>
     </FrameLayout>
 

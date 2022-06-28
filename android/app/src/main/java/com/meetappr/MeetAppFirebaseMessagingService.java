@@ -73,7 +73,7 @@ public class MeetAppFirebaseMessagingService extends FirebaseMessagingService {
 		int oneTimeID = (int) SystemClock.uptimeMillis();
 		String channelId = "default_notification_channel_id";
 		String channelName = "Incoming Call";
-		Uri uri= Uri.parse("viauapp://");
+		Uri uri= Uri.parse("meetappr://");
  
 		Uri notification_sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
         String notification_title= remoteMessage.getData().get("title");

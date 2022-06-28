@@ -10,6 +10,10 @@ import { getFriendsApi } from '../../apis/home/api';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import WebrtcSimple from '../../simple-master';
 import { globalCall } from '../../simple-master/UIKit';
+import {
+  PUSH_CALL_TYPE,
+  usePushNotification,
+} from 'screens/login/usePushNotification';
 
 function Dashboard() {
   const navigation = useNavigation();
@@ -19,6 +23,7 @@ function Dashboard() {
   const fullName = (useRoute().params as any)?.fullName;
   const [receverName, setReceverName] = useState<string>('');
   const [sessionId, setSessionId] = useState<string>('');
+  const { sendFCMPush } = usePushNotification();
 
   useEffect(() => {
     getFriendsList();
@@ -30,7 +35,7 @@ function Dashboard() {
     return response?.data;
   }
 
-  const callToUser = (callId: string) => {
+  const callToUser = (callId: string, userId: number) => {
     if (callId.length > 0) {
       if (callId !== sessionId) {
         const useData = {
@@ -40,9 +45,10 @@ function Dashboard() {
           receiver_name: receverName,
           receiver_avatar:
             'https://www.atlantawatershed.org/wp-content/uploads/2017/06/default-placeholder.png',
+          user_id: userId,
         };
-
         globalCall.call(callId, useData);
+        sendFCMPush(PUSH_CALL_TYPE.INCOMING, 'vvv', userId);
       } else {
         Alert.alert("You can't call yourself");
       }
@@ -117,8 +123,8 @@ function Dashboard() {
       accessoryLeft={() => renderItemIcon(item)}
       style={styles.listItem}
       onPress={async () => {
-        console.log(item.username);
-        callToUser(item.username);
+        console.log(item);
+        callToUser(item.username, item.id);
         // const name = await EncryptedStorage.getItem('user_name');
         // navigation.navigate('Main',{
         //   fullName:name
