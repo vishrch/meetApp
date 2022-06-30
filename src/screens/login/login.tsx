@@ -41,7 +41,7 @@ function Sample() {
       if (!isEmpty(token) && !isEmpty(info) && info) {
         const user = JSON.parse(info);
         //dispatch(authenticate({token: user.token, user: user}));
-        navigate.dispatch(StackActions.replace('Home'));
+        navigate.dispatch(StackActions.replace('Home', { user: '' }));
       }
     } catch (err) {
       console.log(err);
@@ -70,7 +70,7 @@ function Sample() {
     formData.append('password', password);
     userLogin(formData)
       .then(data => {
-        navigate.dispatch(StackActions.replace('Home'));
+        navigate.dispatch(StackActions.replace('Home', { user: data.data }));
         console.log('__userData___', data.data);
         requestNotificationPermission(data.data.id);
       })

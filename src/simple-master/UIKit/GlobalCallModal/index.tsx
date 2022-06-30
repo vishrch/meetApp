@@ -167,7 +167,7 @@ const GlobalCallUI = React.forwardRef((props, ref) => {
     WebrtcSimple.events.audioEnable(enable);
   };
   const rejectCall = () => {
-    sendFCMPush(PUSH_CALL_TYPE.INCOMING, 'vvv', globalCallRef.current.user_id);
+    sendFCMPush(PUSH_CALL_TYPE.INCOMING, '', globalCallRef.current.user_id);
     setVisible(false);
     endCall();
   };

@@ -1,4 +1,4 @@
-import axios from '@app/apis/axiosInstance';
+import axios from 'axios';
 
 const getFriendApi = (data: FormData) => {
   try {

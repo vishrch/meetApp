@@ -22,38 +22,13 @@ LogBox.ignoreAllLogs(true);
 StatusBar.setBarStyle('dark-content');
 const MyBase = () => {
   useEffect(() => {
-    // DeviceEventEmitter.addListener('endCall', payload => {
-    //   console.log('********', payload);
-    // });
-    // DeviceEventEmitter.addListener('answerCall', payload => {
-    //   console.log('********', payload);
-    // });
-    getFCMToken();
+    DeviceEventEmitter.addListener('accept', () => {
+      console.log('***Acc***');
+    });
+    DeviceEventEmitter.addListener('reject', () => {
+      console.log('***Rej***');
+    });
   }, []);
-
-  const requestUserPermission = async () => {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-    if (enabled) {
-      getFCMToken();
-    }
-  };
-  const getFCMToken = async () => {
-    try {
-      const authorized = await messaging().hasPermission();
-      const fcmToken = await messaging().getToken();
-      console.log(';;;;;;', fcmToken);
-      if (authorized) return fcmToken;
-
-      requestUserPermission();
-      return fcmToken;
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <View style={{ flex: 1 }}>

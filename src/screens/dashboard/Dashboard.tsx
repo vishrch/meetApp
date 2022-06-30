@@ -17,6 +17,8 @@ import {
 
 function Dashboard() {
   const navigation = useNavigation();
+  const { params } = useRoute();
+
   const [error, setError] = useState<string | null>(null);
   const [friends, setFriends] = useState<Friend[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -26,6 +28,7 @@ function Dashboard() {
   const { sendFCMPush } = usePushNotification();
 
   useEffect(() => {
+    console.log('*****', params.user.lname);
     getFriendsList();
     startConnection();
   }, []);
@@ -48,7 +51,7 @@ function Dashboard() {
           user_id: userId,
         };
         globalCall.call(callId, useData);
-        sendFCMPush(PUSH_CALL_TYPE.INCOMING, 'vvv', userId);
+        sendFCMPush(PUSH_CALL_TYPE.INCOMING, params?.user?.lname ?? '', userId);
       } else {
         Alert.alert("You can't call yourself");
       }

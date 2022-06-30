@@ -67,7 +67,7 @@ public class IncomingCallScreenActivity extends ReactActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
-        setContentView(R.layout.activity_call_incoming);
+        setContentView(R.layout.incoming_call_activity);
 
         Intent intent = getIntent();
         String call_type=intent.getStringExtra("MESSAGE_TYPE");
@@ -94,55 +94,55 @@ public class IncomingCallScreenActivity extends ReactActivity {
         Boolean isAppRuning=intent.getBooleanExtra("APP_STATE",false);
 
         TextView tvName = (TextView)findViewById(R.id.callerName);
-        // tvName.setText("callerName");
+        tvName.setText(host_name);
 
         //
 
         final ReactContext reactContext = getReactInstanceManager().getCurrentReactContext();
 
          ImageButton acceptCallBtn = (ImageButton) findViewById(R.id.accept_call_btn);
-        // acceptCallBtn.setOnClickListener(new OnClickListener() {
-        //     @Override
-        //     public void onClick(View view) {
-        //         WritableMap params = Arguments.createMap();
-        //         params.putBoolean("done", true);
-        //         params.putString("call_type",incoming_call_type);
+        acceptCallBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                WritableMap params = Arguments.createMap();
+                params.putBoolean("done", true);
+                params.putString("call_type",incoming_call_type);
 
-        //         if(isAppRuning){
-        //             Intent intent = new Intent(IncomingCallScreenActivity.this, MainActivity.class);
-        //             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        //             intent.putExtra("CALL_TYPE",incoming_call_type);
-        //             finish();
-        //             startActivity(intent);
-        //         }
-        //     else{
-        //             sendEvent(reactContext, "accept", params);
-        //             finish();
-        //         }
-        //     }
-        // });
+                if(isAppRuning){
+                    Intent intent = new Intent(IncomingCallScreenActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    intent.putExtra("CALL_TYPE",incoming_call_type);
+                    finish();
+                    startActivity(intent);
+                }
+            else{
+                    sendEvent(reactContext, "accept", params);
+                    finish();
+                }
+            }
+        });
 
         ImageButton rejectCallBtn = (ImageButton) findViewById(R.id.reject_call_btn);
-        // rejectCallBtn.setOnClickListener(new OnClickListener() {
-            // @Override
-            // public void onClick(View view) {
-            //     WritableMap params = Arguments.createMap();
-            //     params.putBoolean("done", true);
-            //     params.putString("call_type",incoming_call_type);
-            //     onDisconnected();
-            //     if(isAppRuning){
-            //         Intent intent = new Intent(IncomingCallScreenActivity.this, MainActivity.class);
-            //         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY );
-            //         intent.putExtra("CALL_TYPE",incoming_call_type);
-            //         finish();
-            //         startActivity(intent);
-            //     }
-            //     else{
-            //         sendEvent(reactContext, "reject", params);
-            //         finish();
-            //     }
-            // }
-        // });
+        rejectCallBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                WritableMap params = Arguments.createMap();
+                params.putBoolean("done", true);
+                params.putString("call_type",incoming_call_type);
+                onDisconnected();
+                if(isAppRuning){
+                    Intent intent = new Intent(IncomingCallScreenActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY );
+                    intent.putExtra("CALL_TYPE",incoming_call_type);
+                    finish();
+                    startActivity(intent);
+                }
+                else{
+                    sendEvent(reactContext, "reject", params);
+                    finish();
+                }
+            }
+        });
 
         Handler handler = new Handler();
 
