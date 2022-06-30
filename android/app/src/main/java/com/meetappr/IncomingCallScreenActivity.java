@@ -109,13 +109,19 @@ public class IncomingCallScreenActivity extends ReactActivity {
                 params.putString("call_type",incoming_call_type);
 
                 if(isAppRuning){
-                    Intent intent = new Intent(IncomingCallScreenActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                    intent.putExtra("CALL_TYPE",incoming_call_type);
+                  sendEvent(reactContext, "accept", params);
+               
+                    // Intent intent = new Intent(IncomingCallScreenActivity.this, MainActivity.class);
+                    // intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    // intent.putExtra("CALL_TYPE",incoming_call_type);
                     finish();
-                    startActivity(intent);
+                    // startActivity(intent);
                 }
             else{
+                    //        Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.meetappr");
+                    // if (launchIntent != null) { 
+                    //     startActivity(launchIntent);
+                    // }
                     sendEvent(reactContext, "accept", params);
                     finish();
                 }
@@ -131,11 +137,13 @@ public class IncomingCallScreenActivity extends ReactActivity {
                 params.putString("call_type",incoming_call_type);
                 onDisconnected();
                 if(isAppRuning){
-                    Intent intent = new Intent(IncomingCallScreenActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY );
-                    intent.putExtra("CALL_TYPE",incoming_call_type);
+                  sendEvent(reactContext, "reject", params);
+        
+                    // Intent intent = new Intent(IncomingCallScreenActivity.this, MainActivity.class);
+                    // intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY );
+                    // intent.putExtra("CALL_TYPE",incoming_call_type);
                     finish();
-                    startActivity(intent);
+                    // startActivity(intent);
                 }
                 else{
                     sendEvent(reactContext, "reject", params);
@@ -150,7 +158,7 @@ public class IncomingCallScreenActivity extends ReactActivity {
             public void run() {
                 finish();
             }
-        }, 10000);
+        }, 45000);
 
     }
 

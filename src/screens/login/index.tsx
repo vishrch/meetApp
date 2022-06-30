@@ -24,10 +24,10 @@ const LoginScrenn: React.FC<Props> = props => {
     },
     onSubmit: values => {
       globalLoading.show();
-      setTimeout(() => {
-        globalLoading.hide();
-        navigate('Main', { fullName: values.fullName });
-      }, 1000);
+      // setTimeout(() => {
+      //   globalLoading.hide();
+      //   navigate('Main', { fullName: values.fullName });
+      // }, 1000);
     },
   });
   return (

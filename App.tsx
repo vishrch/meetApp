@@ -14,22 +14,10 @@ import {
   globalGroupCallRef,
   GlobalGroupCallUI,
 } from './src/simple-master/UIKit';
-import { useEffect } from 'react';
-import { DeviceEventEmitter, Platform } from 'react-native';
-import messaging from '@react-native-firebase/messaging';
 
 LogBox.ignoreAllLogs(true);
 StatusBar.setBarStyle('dark-content');
 const MyBase = () => {
-  useEffect(() => {
-    DeviceEventEmitter.addListener('accept', () => {
-      console.log('***Acc***');
-    });
-    DeviceEventEmitter.addListener('reject', () => {
-      console.log('***Rej***');
-    });
-  }, []);
-
   return (
     <View style={{ flex: 1 }}>
       <I18nextProvider i18n={i18next}>

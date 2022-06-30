@@ -16,11 +16,11 @@ function AppNavigator() {
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Main"
           component={MainScreen}
           options={{ headerShown: false }}
-        />
+        /> */}
         <Stack.Screen
           name="Login"
           component={Sample}
