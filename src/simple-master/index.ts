@@ -15,7 +15,7 @@ import {
   SetupPeer,
   TypeProps,
   UserDataProps,
-  VideoConfigs
+  VideoConfigs,
 } from './WebRtcSimple/contains';
 import {
   callToUser,
@@ -26,7 +26,7 @@ import {
   reconnect,
   destroy,
   startGroup,
-  startStream
+  startStream,
 } from './WebRtcSimple/peer';
 import { startWebRTC } from './WebRtcSimple/webrtc';
 
@@ -48,14 +48,14 @@ const WebRTCSimple = {
           peerServer = peer;
           return true;
         } else {
-          return false;
+          return true;
         }
       } else {
         return false;
       }
     }
   },
-  stop: () => { 
+  stop: () => {
     sessionId = null;
     destroy();
   },
@@ -82,8 +82,9 @@ const WebRTCSimple = {
     }
   },
   listenings: {
-    callEvents: (callback: (type: TypeProps, userdata?: UserDataProps) => void) => {
-
+    callEvents: (
+      callback: (type: TypeProps, userdata?: UserDataProps) => void,
+    ) => {
       START_CALL.subscribe((data: any) => {
         WebRTCSimple.events.streamEnable(true);
         arrPeerConn.push(data.peerConn);
@@ -144,7 +145,9 @@ const WebRTCSimple = {
         }
       });
     },
-    getRemoteStream: (callback: (remoteStream: any, sessionId?: string) => void) => {
+    getRemoteStream: (
+      callback: (remoteStream: any, sessionId?: string) => void,
+    ) => {
       REMOTE_STREAM.subscribe((data: any) => {
         callback(data?.remoteStream, data?.sessionId);
       });
@@ -192,7 +195,7 @@ const WebRTCSimple = {
       },
       cancel: () => {
         Vibration.cancel();
-      }
+      },
     },
     message: (message: any) => {
       if (arrPeerConn.length > 0) {

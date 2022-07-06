@@ -4,7 +4,6 @@ import {
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import MainScreen from 'screens/bottombar';
 import Dashboard from 'screens/dashboard/Dashboard';
 import Sample from 'screens/login/login';
 
@@ -16,11 +15,6 @@ function AppNavigator() {
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator initialRouteName="Login">
-        {/* <Stack.Screen
-          name="Main"
-          component={MainScreen}
-          options={{ headerShown: false }}
-        /> */}
         <Stack.Screen
           name="Login"
           component={Sample}

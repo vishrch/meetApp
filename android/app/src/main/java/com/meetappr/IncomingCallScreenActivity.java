@@ -118,11 +118,11 @@ public class IncomingCallScreenActivity extends ReactActivity {
                     // startActivity(intent);
                 }
             else{
-                    //        Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.meetappr");
-                    // if (launchIntent != null) { 
-                    //     startActivity(launchIntent);
-                    // }
                     sendEvent(reactContext, "accept", params);
+                    Intent intent = new Intent(IncomingCallScreenActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    intent.putExtra("CALL_TYPE",incoming_call_type);
+                    startActivity(intent);
                     finish();
                 }
             }
@@ -147,6 +147,10 @@ public class IncomingCallScreenActivity extends ReactActivity {
                 }
                 else{
                     sendEvent(reactContext, "reject", params);
+                    Intent intent = new Intent(IncomingCallScreenActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    intent.putExtra("CALL_TYPE",incoming_call_type);
+                    startActivity(intent);
                     finish();
                 }
             }

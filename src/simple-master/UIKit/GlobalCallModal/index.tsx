@@ -1,5 +1,6 @@
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 import {
+  DeviceEventEmitter,
   Image,
   Modal,
   StatusBar,
@@ -38,6 +39,12 @@ export interface Props {
 
 StatusBar.setBarStyle('dark-content');
 const GlobalCallUI = React.forwardRef((props, ref) => {
+  useEffect(() => {
+    DeviceEventEmitter.addListener('accept', () => {
+      acceptCall();
+    });
+    DeviceEventEmitter.addListener('reject', () => endCall());
+  }, []);
   const [visible, setVisible] = useState<boolean>(false);
   const [type, setType] = useState<string>();
   const [remoteStream, setRemoteStream] = useState<any>(null);

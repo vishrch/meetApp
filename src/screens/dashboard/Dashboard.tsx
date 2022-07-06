@@ -28,7 +28,6 @@ function Dashboard() {
   const { sendFCMPush } = usePushNotification();
 
   useEffect(() => {
-    console.log('*****', params.user.lname);
     getFriendsList();
     startConnection();
   }, []);
